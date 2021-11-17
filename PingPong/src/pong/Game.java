@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 
@@ -59,6 +60,10 @@ public class Game extends Canvas implements Runnable,KeyListener{
 		Graphics g = layer.getGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0,0,WIDTH*SCALE,HEIGHT*SCALE);
+		g.setFont(new Font("Arial",Font.BOLD,10));
+		g.setColor(Color.green);
+		g.drawString("Enemy:"+Game.scoreE,WIDTH-105,HEIGHT-70);
+		g.drawString("Player:"+Game.scoreP,WIDTH-105,HEIGHT-50);
 		player.render(g);
 		enemy.render(g);
 		ball.render(g);
@@ -74,7 +79,7 @@ public class Game extends Canvas implements Runnable,KeyListener{
 			tick();
 			render();
 			try {
-				Thread.sleep(1000/6);
+				Thread.sleep(280/10);
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}

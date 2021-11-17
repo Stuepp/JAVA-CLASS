@@ -27,12 +27,10 @@ public class Ball {
 		}
 		if(y >= Game.HEIGHT) {
 			Game.scoreE++;
-			System.out.println("Enemy point! "+Game.scoreE);
 			new Game(Game.scoreE,Game.scoreP);
 			return;
 		}else if( y < 0) {
 			Game.scoreP++;
-			System.out.println("Player point! "+Game.scoreP);
 			new Game(Game.scoreE,Game.scoreP);
 			return;
 		}
