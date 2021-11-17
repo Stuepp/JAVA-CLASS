@@ -1,0 +1,14 @@
+Hal,New York,111,43
+Jay,Wahitogn,222,23
+Miles,Broklyn,333,15
+Peter,New York,444,44
+John,NewVille,555,25
+Bruce,Gotham,666,60
+Yang,Murim,777,23
+Luo,Murim,888,80
+Crocodile,Alabasta,999,44
+Mustang,Alquimia,000,40
+Lucas da Silva,Joinville,272,5
+Igor Pereira,Jaraguá do Sul,472,5
+Luiz Otávio Ramos,Joinville,343,14
+João Pedro Oliveira,Florianópolis,475,17
