@@ -19,12 +19,13 @@ public class Game extends Canvas implements Runnable,KeyListener{
 	public static int HEIGHT = 120;
 	public static int SCALE = 3;
 	public static int scoreE, scoreP;
+	private static boolean start;
 	public static Player player;
 	public static Enemy enemy;
 	public static Ball ball;
 	public BufferedImage layer = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	//Construtor
-	public Game(int scoreE, int scoreP) {
+	public Game(int scoreE, int scoreP, boolean start) {
 		this.setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		this.addKeyListener(this);
 		player = new Player(100,HEIGHT-5);
@@ -32,10 +33,11 @@ public class Game extends Canvas implements Runnable,KeyListener{
 		ball = new Ball(100,(HEIGHT/2) - 1);
 		Game.scoreE = scoreE;
 		Game.scoreP = scoreP;
+		Game.start = start;
 	}
 	//main
 	public static void main(String[]args) {
-		Game game = new Game(0,0);
+		Game game = new Game(0,0, false);
 		JFrame frame = new JFrame("Pong");
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,6 +63,20 @@ public class Game extends Canvas implements Runnable,KeyListener{
 		g.setColor(Color.black);
 		g.fillRect(0,0,WIDTH*SCALE,HEIGHT*SCALE);
 		g.setFont(new Font("Arial",Font.BOLD,10));
+		g.setColor(Color.green);
+		int witchif = Game.scoreP + Game.scoreE;
+		if(start!=true && witchif == 0) {
+			g.drawString("Space to Start",WIDTH-115,HEIGHT-60);
+		}else if(start!=true && witchif > 0) {
+			g.drawString("Space to Continue",WIDTH-125,HEIGHT-60);
+		}
+		while(start!=true) {
+			g = bs.getDrawGraphics();
+			bs.show();
+			g.drawImage(layer,0,0,WIDTH*SCALE,HEIGHT*SCALE,null);
+		}
+		g.setColor(Color.black);
+		g.fillRect(0,0,WIDTH*SCALE,HEIGHT*SCALE);
 		g.setColor(Color.green);
 		g.drawString("Enemy:"+Game.scoreE,WIDTH-105,HEIGHT-70);
 		g.drawString("Player:"+Game.scoreP,WIDTH-105,HEIGHT-50);
@@ -97,7 +113,9 @@ public class Game extends Canvas implements Runnable,KeyListener{
 		}else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 			player.left = true;
 		}
-		
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			start = true;
+		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {

@@ -27,11 +27,11 @@ public class Ball {
 		}
 		if(y >= Game.HEIGHT) {
 			Game.scoreE++;
-			new Game(Game.scoreE,Game.scoreP);
+			new Game(Game.scoreE,Game.scoreP, false);
 			return;
 		}else if( y < 0) {
 			Game.scoreP++;
-			new Game(Game.scoreE,Game.scoreP);
+			new Game(Game.scoreE,Game.scoreP, false);
 			return;
 		}
 		
