@@ -1,0 +1,58 @@
+create sequence id_user;
+create sequence id_post;
+create sequence id_comment;
+create sequence id_react;
+create sequence id_followers;
+create sequence id_seguindo;
+
+create table usuario(
+   id int,
+   nome varchar(50),
+   nickname varchar(50),
+   bio varchar(150),
+   senha varchar(13),
+   primary key (id)
+);
+create table post(
+    id int,
+	id_user int,
+    title varchar(25),
+    descricao varchar(150),
+    imagem varchar(50),
+    primary key (id),
+    foreign key (id_user) references usuario
+);
+create table comentario(
+    id int,
+	id_user int,
+	id_post int,
+    msg varchar(150),
+    primary key (id), 
+    foreign key (id_user) references usuario,
+    foreign key (id_post) references post
+);
+create table react(
+    id int,
+	id_user int,
+	id_post int,
+    imagem varchar(50),
+    primary key (id),
+    foreign key (id_user) references usuario,
+    foreign key (id_post) references post
+);
+create table followers(
+    idPrincipal int,
+    id_user1 int,
+    id_user2 int,
+    primary key (idPrincipal),
+    foreign key (id_user1) references usuario,
+    foreign key (id_user2) references usuario
+);
+create table seguindo(
+    idPrincipal int,
+    id_user1 int,
+    id_user2 int,
+    primary key (idPrincipal),
+    foreign key (id_user1) references usuario,
+    foreign key (id_user2) references usuario
+);

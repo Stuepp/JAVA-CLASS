@@ -1,18 +1,24 @@
 package dados;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class User {
 	//Atributos
 	private String name, bio, nickname, password;
-	private int uniqueCode;
+	private int id;
 	private ArrayList<Post> posts = new ArrayList<Post>();
 	private ArrayList<User> following = new ArrayList<User>();
 	private ArrayList<User> followers = new ArrayList<User>();
 	//construtor
+	public User(int id, String name, String nickname, String bio, String password) {
+		this.id = id;
+		this.name = name;
+		this.nickname = nickname;
+		this.bio = bio;
+		this.password = password;
+	}
 	public User() {
-		this.uniqueCode = unique_code();
+		
 	}
 	//Getters and Setters
 	public void setName(String name) {
@@ -39,8 +45,11 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
-	public int getUniqueCode() {
-		return uniqueCode;
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getId() {
+		return id;
 	}
 	public ArrayList<Post> getPosts() {
 		return posts;
@@ -61,18 +70,6 @@ public class User {
 		this.followers = followers;
 	}
 	//métodos
-	public static int unique_code() {
-		int uniqueCode;
-		
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		for(int i = 0; i < 999; i++) {
-			list.add(i);
-		}
-		Collections.shuffle(list);
-		uniqueCode = list.get(0);
-		
-		return uniqueCode;
-	}
 	public void delete_Post(int pos) {
 		posts.remove(pos);
 	}
@@ -87,7 +84,7 @@ public class User {
 	}
 	public void unfollow_user(User user) {//fazer mecanica de busca
 		for(int i = 0;  i < following.size(); i++) {
-			if(user.getUniqueCode() == following.get(i).getUniqueCode()) {
+			if(user.getId() == following.get(i).getId()) {
 				following.remove(i);
 			}
 		}
@@ -96,7 +93,7 @@ public class User {
 	public boolean equals(Object o) {
 		if(o instanceof User) {
 			User u = new User();
-			if (this.uniqueCode == u.getUniqueCode()){
+			if (this.id == u.getId()){
 				return true;
 			}else {
 				return false;

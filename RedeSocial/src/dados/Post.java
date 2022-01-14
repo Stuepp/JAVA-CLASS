@@ -4,15 +4,40 @@ import java.util.ArrayList;
 
 public class Post {
 	//Atributos
-	private String subtitle, description;
+	private int id;
+	private int user_id;
+	private String subtitle, description, imagem;
 	private ArrayList<Comment> comments = new ArrayList<Comment>();
-	private ArrayList<Image> imagens = new ArrayList<Image>();
+	//private ArrayList<Image> imagens = new ArrayList<Image>();
 	private ArrayList<Reaction> likes = new ArrayList<Reaction>();
 	private ArrayList<Reaction> sads = new ArrayList<Reaction>();
 	private ArrayList<Reaction> happys = new ArrayList<Reaction>();
 	private ArrayList<Reaction> angrys = new ArrayList<Reaction>();
 	private User user;
+	//Construtor
+	public Post(int id,int user_id, String title, String description, String imagem) {
+		this.id = id;
+		this.user_id = user_id;
+		this.subtitle = title;
+		this.description = description;
+		this.imagem = imagem;
+	}
+	public Post() {
+		
+	}
 	//Getters and Setters
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
 	public ArrayList<Reaction> getLikes() {
 		return likes;
 	}
@@ -55,11 +80,11 @@ public class Post {
 	public void setComments(ArrayList<Comment> comments) {
 		this.comments = comments;
 	}
-	public ArrayList<Image> getImagens() {
-		return imagens;
+	public String getImagem() {
+		return imagem;
 	}
-	public void setImagens(ArrayList<Image> imagens) {
-		this.imagens = imagens;
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}
 	public User getUser() {
 		return user;
@@ -174,10 +199,5 @@ public class Post {
 	}
 	public void comment_in_Post(Comment comment) {
 		comments.add(comment);
-	}
-	public void update_post(ArrayList<Image> imgs,String subtitle,String description){
-		imagens = imgs;
-		this.subtitle = subtitle;
-		this.description = description;
 	}
 }

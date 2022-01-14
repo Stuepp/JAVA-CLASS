@@ -1,8 +1,14 @@
 package negocio;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+
 import dados.User;
 import exceptions.*;
+import persisencia.ComentarioDAO;
+import persisencia.Conexao;
+import persisencia.PostDAO;
+import persisencia.UserDAO;
 import dados.Comment;
 import dados.Post;
 
@@ -10,6 +16,16 @@ public class Action {
 	//Atributos
 	private ArrayList<User> users = new ArrayList<User>();
 	private ArrayList<Post> posts = new ArrayList<>();
+	private UserDAO userDAO;
+	private PostDAO postDAO;
+	private ComentarioDAO comentarioDAO;
+	//Construtos
+	public Action(String senha) throws ClassNotFoundException,SQLException,SelectException {
+		Conexao.setSenha(senha);
+		userDAO = new UserDAO();
+		postDAO = new PostDAO();
+		comentarioDAO = new ComentarioDAO();
+	}
 	//Getters and Setters
 	public ArrayList<User> getUsers() {
 		return users;
@@ -25,14 +41,15 @@ public class Action {
 	}
 	//Métodos
 	//quando o usuário fizer login vai se ter sempre um User me, sendo esse me o usuário
-	public void registerUser(User user) {//ok no momento
+	public void registerUser(User user) throws InsertException, SelectException {//ok no momento
 		users.add(user);
+		userDAO.insert(user);
 	}
-	public User login(int uniquecode, String password) throws LoginException{//ok no momento
+	public User login(int uniquecode, String password) throws SelectException{//ok no momento
 		//usar um método de procura visto em EDA
-		for(int i = 0; i < users.size();i++) {
-			if(users.get(i).getUniqueCode() == uniquecode && users.get(i).getPassword().equals(password)) {
-				return users.get(i);
+		for(int i = 0; i < userDAO.selectAll().size();i++) {
+			if(userDAO.selectAll().get(i).getId() == uniquecode && userDAO.selectAll().get(i).getPassword().equals(password)) {
+				return userDAO.selectAll().get(i);
 			}
 		}
 		return null;
@@ -40,58 +57,56 @@ public class Action {
 	public User logout() throws LogoutException{//é necessária no Action?
 		return null;
 	}
-	public void deleteUser(User user) throws DeleteUserException{//ok no momento
-		
-		for(int i = 0;  i < users.size(); i++) {
-			if(user.getUniqueCode() == users.get(i).getUniqueCode()) {
-				users.remove(i);
+	public void deleteUser(int id) throws DeleteException, SelectException{//ok no momento
+		for(int i = 0; i < userDAO.selectAll().size(); i++) {
+			if(userDAO.selectAll().get(i).getId() == id) {
+				userDAO.delete(userDAO.selectAll().get(i));
 			}
 		}
 	}
-	public ArrayList<User> searchUser(String nome) throws SearchUserException{//retorna lista de usuarios que contenha o texto inserido no nome/apelido
+	public ArrayList<User> searchUser(String nome) throws SelectException{//retorna lista de usuarios que contenha o texto inserido no nome/apelido
 		//usar um método de procura visto em EDA
-		int size = users.size();
 		ArrayList<User> foundedUsers = new ArrayList<User>();
-		for(int i = 0; i < size; i++) {
-			if(users.get(i).getName().contains(nome) || users.get(i).getNickname().contains(nome)) {
-				foundedUsers.add(users.get(i));
+		for(int i = 0; i < userDAO.selectAll().size(); i++) {
+			if(userDAO.selectAll().get(i).getName().contains(nome) || userDAO.selectAll().get(i).getNickname().contains(nome)) {
+				foundedUsers.add(userDAO.selectAll().get(i));
 			}
 		}
 		return foundedUsers;
 	}
-	public User searchUser(String nick,int uniquecode) throws SearchUserException{//retorna usúario do nome e código inseridos
-		//usar um método de procura visto em EDA
-		for(int i = 0; i < users.size(); i++) {
-			if(users.get(i).getNickname().equals(nick) && users.get(i).getUniqueCode() == uniquecode) {
-				return users.get(i);
-			}
-		}
-		return null;
+	public User searchUser(int uniquecode) throws SelectException{//retorna usúario do nome e código inseridos
+		return userDAO.select(uniquecode);
 	}
-	public void followUser(User me,User user) throws FollowException{//ok no momento
+	public void followUser(User me,User user) throws FollowException, UpdateException{//ok no momento
 		me.follow_user(user);
 		user.getFollowers().add(me);
+		userDAO.update(user);
+		userDAO.update(me);
 	}
-	public void unfollowUser(User me,User user) throws UnfollowException{//ok no momento
+	public void unfollowUser(User me,User user) throws UnfollowException, UpdateException{//ok no momento
 		me.unfollow_user(user);
 		for(int i = 0;  i < user.getFollowers().size(); i++) {
-			if(me.getUniqueCode() == user.getFollowers().get(i).getUniqueCode()) {
+			if(me.getId() == user.getFollowers().get(i).getId()) {
 				user.getFollowers().remove(i);
 			}
 		}
+		userDAO.update(user);
+		userDAO.update(me);
 	}
-	public void createPost(Post post, User user) throws PostException{//ok no momento
+	public void createPost(Post post, User user) throws InsertException, SelectException{//ok no momento
 		posts.add(post);
 		user.getPosts().add(post);
+		postDAO.insert(post,user);
 	}
 	public void sharePost() {//como fazer?
 		
 	}
-	public void deletePost(User user, int pos) throws DeletePostException{//ok no momento
-		for(int i = 0; i < posts.size();i++) {
-			user.delete_Post(pos);
-			posts.remove(pos);
-		}		
+	public void deletePost(User user, int post_id) throws DeleteException, SelectException{//ok no momento
+		for(int i = 0; i < postDAO.selectAll().size(); i++) {
+			if(postDAO.selectAll().get(i).getId() == post_id){
+				postDAO.delete(postDAO.selectAll().get(i));
+			}
+		}
 	}
 	public void reactToPost(String reactType, Post post, User user) throws ReactException{//adaptar para ser uma imagem
 		post.reactPost(reactType, user);
@@ -99,10 +114,21 @@ public class Action {
 	public void unReactToPost(String reactType, Post post) throws UnreactException{//adaptar para ser uma imagem
 		post.cancel_reactPost(reactType);
 	}
-	public void commentPost(Post post,User user, String txt) throws CommentException{
+	public void commentPost(Post post,User user, String txt) throws InsertException, SelectException{
 		Comment comment = new Comment();
 		comment.setText(txt);
-		comment.setUser(user);
-		post.comment_in_Post(comment);
+		comment.setUser_id(user.getId());
+		comment.setPost_id(post.getId());
+		//post.comment_in_Post(comment);
+		comentarioDAO.insert(comment);
+	}
+	public ArrayList<Comment> show_comments(Post post) throws SelectException{
+		return comentarioDAO.selectAll(post);
+	}
+	public ArrayList<User> show_users() throws SelectException {
+		return userDAO.selectAll();
+	}
+	public ArrayList<Post> show_posts() throws SelectException {
+		return postDAO.selectAll();
 	}
 }
