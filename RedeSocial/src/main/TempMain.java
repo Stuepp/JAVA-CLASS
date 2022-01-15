@@ -13,7 +13,7 @@ public class TempMain {
 	private static Scanner s = new Scanner(System.in);
 	private static User me;
 	private static Action action;
-	private static String senha = "1Maeve&Tracer1";
+	private static String senha = "COLOQUE-SUA-SENHA-AQUI";
 	
 	public static void main(String[] args) throws ClassNotFoundException, SelectException {
 		try {
@@ -31,7 +31,7 @@ public class TempMain {
 				panelLoged();
 			}
 			System.out.println("Deseja continuar?"
-					+ "\n(0)Sim\n(1)N„o");
+					+ "\n(0)Sim\n(1)N√£o");
 			menu = Integer.parseInt(s.nextLine());
 			try {
 
@@ -43,8 +43,8 @@ public class TempMain {
 	}
 	public static void panel() {
 		try {
-			System.out.println("(1) registra usu·rio\n(2) login\n(3) mostra usu·rios"
-					+ "\n(4) motra posts\n(5) procura por um usu·rio\n(6) procura por usu·rios");
+			System.out.println("(1) registra usu√°rio\n(2) login\n(3) mostra usu√°rios"
+					+ "\n(4) motra posts\n(5) procura por um usu√°rio\n(6) procura por usu√°rios");
 			int escolha = Integer.parseInt(s.nextLine());
 			switch(escolha) {
 				case 1:
@@ -60,12 +60,12 @@ public class TempMain {
 					show_posts();
 					break;
 				case 5:
-					System.out.println("Digite o id do usu·rio:");
+					System.out.println("Digite o id do usu√°rio:");
 					int id = Integer.parseInt(s.nextLine()); 
 					search_user(id);
 					break;
 				case 6:
-					System.out.println("Digite o nick do usu·rio:");
+					System.out.println("Digite o nick do usu√°rio:");
 					String nick = s.nextLine();
 					search_user(nick);
 				default:
@@ -78,9 +78,9 @@ public class TempMain {
 	}
 	public static void panelLoged() {
 		try {
-			System.out.println("(1) registra usu·rio\n(2) login\n(3) mostra usu·rios"
-					+ "\n(4) motra posts\n(5) procurar usuarios\n(6) procura por um usu·rio\n(7) deletar usu·rio"
-					+ "\n(8) seguir usu·rio\n(9) deixar se seguir usu·rio\n(10) criar post"
+			System.out.println("(1) registra usu√°rio\n(2) login\n(3) mostra usu√°rios"
+					+ "\n(4) motra posts\n(5) procurar usuarios\n(6) procura por um usu√°rio\n(7) deletar usu√°rio"
+					+ "\n(8) seguir usu√°rio\n(9) deixar se seguir usu√°rio\n(10) criar post"
 					+ "\n(11) deletar post\n(12) logout");
 			int escolha = Integer.parseInt(s.nextLine());
 			switch(escolha) {
@@ -97,12 +97,12 @@ public class TempMain {
 					show_posts();
 					break;
 				case 5:
-					System.out.println("Digite o nick do usu·rio:");
+					System.out.println("Digite o nick do usu√°rio:");
 					String name = s.nextLine();
 					search_user(name);
 					break;
 				case 6:
-					System.out.println("Digite o id do usu·rio:");
+					System.out.println("Digite o id do usu√°rio:");
 					int id = Integer.parseInt(s.nextLine()); 
 					search_user(id);
 					break;
@@ -149,11 +149,11 @@ public class TempMain {
 		user.setBio(s.nextLine());
 		
 		action.registerUser(user);
-		System.out.println("Seu cÛdigo ˙nico: " +user.getId());
+		System.out.println("Seu c√≥digo √∫nico: " +user.getId());
 	}
 	public static void login() throws SelectException {
 		try {
-			System.out.println("Digite seu cÛdigo ˙nico:");
+			System.out.println("Digite seu c√≥digo √∫nico:");
 			int uniquecode = Integer.parseInt(s.nextLine());
 			System.out.println("Digite sua senha:");
 			String password = s.nextLine();
@@ -163,7 +163,7 @@ public class TempMain {
 		}
 		if(me != null) {
 			System.out.println("login was a success");
-			System.out.println("Usu·rio logado:"
+			System.out.println("Usu√°rio logado:"
 					+ "\n"+me.getNickname()+"#"+me.getId());
 		}else{
 			System.out.println("login failed check for the correct code and/or password");
@@ -177,14 +177,14 @@ public class TempMain {
 			me = action.logout();
 		}
 	}
-	public static void show_users() throws SelectException{//Criar na action, na verdade est· ok
-		System.out.println("Usu·rios cadastrados:");
+	public static void show_users() throws SelectException{//Criar na action, na verdade est√° ok
+		System.out.println("Usu√°rios cadastrados:");
 		ArrayList<User> temp = new ArrayList<User>();
 		temp = action.show_users();
 		for(int i = 0; i < temp.size(); i++) {
 			System.out.println(temp.get(i).getNickname()+"#"+temp.get(i).getId()
 					+"\n\t"+temp.get(i).getBio());
-			//fazer para mostrar n∫ de seguidores e seguindo
+			//fazer para mostrar n¬∫ de seguidores e seguindo
 		}
 	}
 	public static void delete_user() throws DeleteException, SelectException{
@@ -193,21 +193,21 @@ public class TempMain {
 		if(escolha == true) {//fazer deletar os posts do usuario
 			action.deleteUser(me.getId());
 			me = null;
-			System.out.println("Usu·rio deletado");
+			System.out.println("Usu√°rio deletado");
 		}else if(escolha == false){
-			System.out.println("OperaÁ„o cancelada");
+			System.out.println("Opera√ß√£o cancelada");
 		}
 	}
 	public static void follow_user() throws FollowException, UpdateException, SelectException{
 		show_users();
-		System.out.println("Digite o cÛdigo de quem deseja seguir:");
+		System.out.println("Digite o c√≥digo de quem deseja seguir:");
 		int uniquecode = Integer.parseInt(s.nextLine());
 		for(int i = 0; i < action.getUsers().size();i++) {
 			if(uniquecode == me.getId()) {
-				System.out.println("VocÍ n„o pode se seguir");
+				System.out.println("Voc√™ n√£o pode se seguir");
 			}else if(uniquecode == action.getUsers().get(i).getId() && uniquecode != me.getId()) {
 				action.followUser(me, action.getUsers().get(i));
-				System.out.println(me.getNickname()+" comeÁou a seguir "+action.getUsers().get(i).getNickname());
+				System.out.println(me.getNickname()+" come√ßou a seguir "+action.getUsers().get(i).getNickname());
 			}
 		}
 	}
@@ -216,7 +216,7 @@ public class TempMain {
 		for(int i = 0; i < me.getFollowing().size(); i++) {
 			System.out.println("\t"+me.getFollowing().get(i).getNickname()+"#"+me.getFollowing().get(i).getId());
 		}
-		System.out.println("Digite o cÛdigo de quem deseja parar de seguir:");
+		System.out.println("Digite o c√≥digo de quem deseja parar de seguir:");
 		int uniquecode = Integer.parseInt(s.nextLine());
 		for(int i = 0; i < me.getFollowing().size(); i++) {
 			if(me.getFollowing().get(i).getId() == uniquecode) {
@@ -228,7 +228,7 @@ public class TempMain {
 		Post post = new Post();
 		System.out.println("Digite o sub titulo do post:");
 		post.setSubtitle(s.nextLine());
-		System.out.println("DescriÁ„o do post:");
+		System.out.println("Descri√ß√£o do post:");
 		post.setDescription(s.nextLine());
 		System.out.println("Img:");
 		post.setImagem(s.nextLine());
@@ -257,7 +257,7 @@ public class TempMain {
 			}
 			*/
 			if(action.show_comments(posts.get(i)).size() > 0) {
-				System.out.println("Deseja ver os coment·rios?");
+				System.out.println("Deseja ver os coment√°rios?");
 				Boolean escolha = Boolean.parseBoolean(s.nextLine());
 				if(escolha) {
 					for(int j = 0; j < action.show_comments(posts.get(i)).size(); j++) {
@@ -280,7 +280,7 @@ public class TempMain {
 						unreact_post(post);
 					}
 				}*/
-				System.out.println("Deseja fazer um coment·rio?");
+				System.out.println("Deseja fazer um coment√°rio?");
 				Boolean escolha = Boolean.parseBoolean(s.nextLine());
 				if(escolha) {
 					comment_post(posts.get(i));
@@ -308,7 +308,7 @@ public class TempMain {
 		action.deletePost(me, deletar);
 	}
 	public static void react_post(Post post) throws ReactException{
-		System.out.println("Escolha uma reaÁ„o: like,sad,happy,angry");
+		System.out.println("Escolha uma rea√ß√£o: like,sad,happy,angry");
 		String react = s.nextLine();
 		action.reactToPost(react, post, me);
 	}
@@ -319,7 +319,7 @@ public class TempMain {
 	}
 	public static void search_user(int uniquecode) throws SelectException{
 		if(action.searchUser(uniquecode) == null) {
-			System.out.println("Usu·rio n„o encontrado");
+			System.out.println("Usu√°rio n√£o encontrado");
 		}else {
 			System.out.println(action.searchUser(uniquecode).getName()
 					+"\n\t"+action.searchUser(uniquecode).getNickname()+"#"+action.searchUser(uniquecode).getId()
@@ -337,7 +337,7 @@ public class TempMain {
 		}
 	}
 	public static void comment_post(Post post) throws InsertException, SelectException{
-		System.out.println("Digite seu coment·rio");
+		System.out.println("Digite seu coment√°rio");
 		action.commentPost(post,me, s.nextLine());
 	}
 }
